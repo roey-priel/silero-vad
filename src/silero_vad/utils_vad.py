@@ -1,5 +1,5 @@
 import torch
-import torchaudio
+# import torchaudio
 from typing import Callable, List
 import warnings
 
@@ -134,40 +134,40 @@ class Validator():
         return outs
 
 
-def read_audio(path: str,
-               sampling_rate: int = 16000):
-    list_backends = torchaudio.list_audio_backends()
+# def read_audio(path: str,
+#                sampling_rate: int = 16000):
+#     list_backends = torchaudio.list_audio_backends()
 
-    assert len(list_backends) > 0, 'The list of available backends is empty, please install backend manually. \
-                                    \n Recommendations: \n \tSox (UNIX OS) \n \tSoundfile (Windows OS, UNIX OS) \n \tffmpeg (Windows OS, UNIX OS)'
+#     assert len(list_backends) > 0, 'The list of available backends is empty, please install backend manually. \
+#                                     \n Recommendations: \n \tSox (UNIX OS) \n \tSoundfile (Windows OS, UNIX OS) \n \tffmpeg (Windows OS, UNIX OS)'
 
-    try:
-        effects = [
-            ['channels', '1'],
-            ['rate', str(sampling_rate)]
-        ]
+#     try:
+#         effects = [
+#             ['channels', '1'],
+#             ['rate', str(sampling_rate)]
+#         ]
 
-        wav, sr = torchaudio.sox_effects.apply_effects_file(path, effects=effects)
-    except:
-        wav, sr = torchaudio.load(path)
+#         wav, sr = torchaudio.sox_effects.apply_effects_file(path, effects=effects)
+#     except:
+#         wav, sr = torchaudio.load(path)
 
-        if wav.size(0) > 1:
-            wav = wav.mean(dim=0, keepdim=True)
+#         if wav.size(0) > 1:
+#             wav = wav.mean(dim=0, keepdim=True)
 
-        if sr != sampling_rate:
-            transform = torchaudio.transforms.Resample(orig_freq=sr,
-                                                       new_freq=sampling_rate)
-            wav = transform(wav)
-            sr = sampling_rate
+#         if sr != sampling_rate:
+#             transform = torchaudio.transforms.Resample(orig_freq=sr,
+#                                                        new_freq=sampling_rate)
+#             wav = transform(wav)
+#             sr = sampling_rate
 
-    assert sr == sampling_rate
-    return wav.squeeze(0)
+#     assert sr == sampling_rate
+#     return wav.squeeze(0)
 
 
-def save_audio(path: str,
-               tensor: torch.Tensor,
-               sampling_rate: int = 16000):
-    torchaudio.save(path, tensor.unsqueeze(0), sampling_rate, bits_per_sample=16)
+# def save_audio(path: str,
+#                tensor: torch.Tensor,
+#                sampling_rate: int = 16000):
+#     torchaudio.save(path, tensor.unsqueeze(0), sampling_rate, bits_per_sample=16)
 
 
 def init_jit_model(model_path: str,
